@@ -15,6 +15,7 @@ libraryDependencies ++= {
   Seq(
     "com.typesafe.akka" %% "akka-actor" % "2.4.0",
     "com.typesafe.akka" %% "akka-http-spray-json-experimental" % "2.0-M1",
+    "io.spray" %%  "spray-json" % "1.3.5",
     "com.typesafe.akka" %% "akka-slf4j" % "2.4.0",
     "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
     "com.typesafe.akka" %% "akka-http-experimental" % "2.0-M1",

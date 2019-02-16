@@ -1,6 +1,7 @@
 import java.util.Properties
 
 import config.Application._
+import model.RegisterDtoResponse
 import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRecords, KafkaConsumer}
 import org.apache.kafka.common.serialization.StringDeserializer
 
@@ -21,9 +22,13 @@ object UserConsumer extends App {
   }
 
   while (true) {
+    import model.MyJsonProtocol.registerDtoResponse
+    import spray.json._
+
     val records: ConsumerRecords[String, String] = consumer.poll(1000)
     records.asScala.foreach(record => {println(s"Received message: $record")
-      MailGun.sendMessage(record.value())
+      val userData = record.value().parseJson.convertTo[RegisterDtoResponse]
+      MailGun.sendMessage(userData)
     })
   }
 

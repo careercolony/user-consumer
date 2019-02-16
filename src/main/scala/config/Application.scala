@@ -14,4 +14,8 @@ object Application {
 
   val domainName: String = config.getString("mailgun.domainName")
   val apiKey: String = config.getString("mailgun.apiKey")
+  val fromEmailAddress: String = config.getString("mailgun.fromEmailAddress")
+  val fromEmailName: String = config.getString("mailgun.fromEmailName")
+  val subject: String = config.getString("mailgun.subject")
 }
+
