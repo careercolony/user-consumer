@@ -8,7 +8,8 @@ import scala.concurrent.Future
 object Application {
   val config: Config = ConfigFactory.load("application.conf")
 
-  val topic: String = config.getString("kafka.topic")
+  val signupTopic: String = config.getString("kafka.signupTopic")
+  val forgotTopic: String = config.getString("kafka.forgotTopic")
   val brokers: String = config.getString("kafka.brokers")
   val groupId: String = config.getString("kafka.groupId")
 
@@ -16,6 +17,7 @@ object Application {
   val apiKey: String = config.getString("mailgun.apiKey")
   val fromEmailAddress: String = config.getString("mailgun.fromEmailAddress")
   val fromEmailName: String = config.getString("mailgun.fromEmailName")
-  val subject: String = config.getString("mailgun.subject")
+  val subject: String = config.getString("mailgun.RegisterSubject")
+  val ForgotPasswordSubject: String = config.getString("mailgun.ForgotPasswordSubject")
 }
 

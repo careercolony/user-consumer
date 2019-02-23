@@ -1,5 +1,5 @@
 import config.Application._
-import model.RegisterDtoResponse
+import model.{ForgotPasswordDto, RegisterDtoResponse}
 import org.matthicks.mailgun._
 
 import scala.concurrent._
@@ -22,4 +22,20 @@ object MailGun {
     val result = Await.result(response, Duration.Inf)
     println(s"Result: $result")
   }
+
+  def sendForgotMail(message: ForgotPasswordDto) = {
+    println("parsed message from topic:" + message)
+    val mailgun = new Mailgun(domainName, apiKey)
+    val response = mailgun.send(Message.simple(
+      from = EmailAddress(fromEmailAddress, fromEmailName),
+      to = EmailAddress(message.email, message.email),
+      //to = EmailAddress("rushabh_11490@yahoo.co.in","rushabh_11490@yahoo.co.in"),
+      ForgotPasswordSubject,
+      html = "<html><body><div><br><br> Dear " + message.email + ", <br><b><h2> Carrier Colony Team recently received a request for a forgotten password.</h2></b><br> To change your Carrier Colony password, please click on this   <font color=#0000ff><a>link</a></font> .<br><br><br> If you did not request this change, you do not need to do anything.<br><br><br> This link will expire in 4 hours.<br><br>\n<b>Best regards,</b><br> Carrier Colony Team <br><br><br></body></html>"
+    ))
+
+    val result = Await.result(response, Duration.Inf)
+    println(s"Result: $result")
+  }
+
 }
