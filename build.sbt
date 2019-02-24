@@ -1,3 +1,10 @@
+enablePlugins(JavaAppPackaging)
+enablePlugins(AshScriptPlugin)
+
+
+packageName in Docker := "careercolony/akka-http-docker-userConsumer-api"
+dockerBaseImage := "openjdk:jre-alpine"
+
 
 name := "UserConsumer"
 
