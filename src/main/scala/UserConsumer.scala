@@ -11,6 +11,8 @@ object UserConsumer extends App {
 
   val consumer = new KafkaConsumer[String, String](configuration)
   consumer.subscribe(List(signupTopic).asJava)
+  val forgotTopicConsumer = new KafkaConsumer[String, String](configuration)
+  forgotTopicConsumer.subscribe(List(forgotTopic).asJava)
 
   private def configuration: Properties = {
     val props = new Properties()
@@ -21,6 +23,26 @@ object UserConsumer extends App {
     props
   }
 
+
+  while (true) {
+    import model.MyJsonProtocol.registerDtoResponse
+    import spray.json._
+    import model.MyJsonProtocol.forgotPasswordDto
+    val records: ConsumerRecords[String, String] = consumer.poll(1000)
+    records.asScala.foreach(record => {println(s"Register Received message: $record")
+      val userData = record.value().parseJson.convertTo[RegisterDtoResponse]
+      MailGun.sendMessage(userData)
+    })
+
+
+    val recordsNew: ConsumerRecords[String, String] = forgotTopicConsumer.poll(1000)
+    recordsNew.asScala.foreach(record => {println(s" Received message: $record")
+      val userData = record.value().parseJson.convertTo[ForgotPasswordDto]
+      MailGun.sendForgotMail(userData)
+    })
+  }
+
+/*
   val forgotTopicConsumer = new KafkaConsumer[String, String](configuration)
   forgotTopicConsumer.subscribe(List(forgotTopic).asJava)
 
@@ -34,17 +56,7 @@ object UserConsumer extends App {
       MailGun.sendForgotMail(userData)
     })
   }
-
-  while (true) {
-    import model.MyJsonProtocol.registerDtoResponse
-    import spray.json._
-
-    val records: ConsumerRecords[String, String] = consumer.poll(1000)
-    records.asScala.foreach(record => {println(s"Register Received message: $record")
-      val userData = record.value().parseJson.convertTo[RegisterDtoResponse]
-      MailGun.sendMessage(userData)
-    })
-  }
+*/
 
 
 
