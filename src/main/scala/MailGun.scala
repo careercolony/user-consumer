@@ -1,11 +1,12 @@
 import config.Application._
-import model.{ForgotPasswordDto, RegisterDtoResponse, ConnectionInvitationDto}
+import model.{ConnectionInvitationDto, ForgotPasswordDto, RegisterDtoResponse}
 import org.matthicks.mailgun._
 
 import scala.concurrent._
 import scala.concurrent.duration._
-
 import java.io._
+
+import com.mashape.unirest.http.Unirest
 
 
 
@@ -45,7 +46,7 @@ object MailGun {
   def sendInvitationMail(message: ConnectionInvitationDto) = {
     println("parsed message from topic invitation:" + message)
     
-    val mailgun = new Mailgun(domainName, apiKey)
+   /* val mailgun = new Mailgun(domainName, apiKey)
     val headers = Map("h:X-Mailgun-Variables" -> message)
 
     val response = mailgun.send(Message.simple(
@@ -65,10 +66,22 @@ object MailGun {
       
       //html = "<html><body><div><br><br> Dear " + message.inviteeEmail + ", <br><b><h2> Hello i will like to join your colony.</h2></b><br><br><br>\n<b>Best regards,</b><br> Carrier Colony Team <br><br><br></body></html>"
 
-    ))
+    ))*/
 
-    val result = Await.result(response, Duration.Inf)
-    println(s"Result: $result")
+
+    val request = Unirest.post("https://api.mailgun.net/v3/" + domainName + "/messages")
+      .basicAuth("api", apiKey)
+      //.field("content-type",  "multipart/form-data;")
+      .field("from", fromEmailAddress)
+      .field("to", message.inviteeEmail)
+      .field("subject",  ContactInvitationSubject)
+      .field("template", "connection_invitation")
+      .field("h:X-Mailgun-Variables", "{\"inviteeName\":" + message.firstname + "}")
+      .asJson()
+
+    println( request.getBody())
+   /* val result = Await.result(response, Duration.Inf)
+    println(s"Result: $result")*/
   }
 
 }
