@@ -4,7 +4,7 @@
 		module="userconsumer_2.11"
 		revision="1.0"
 		status="integration"
-		publication="20190224082914"
+		publication="20190423191915"
 	>
 		<description>
 		UserConsumer
@@ -56,6 +56,6 @@
 		<dependency org="com.typesafe.akka" name="akka-stream-kafka_2.11" rev="0.11-M2" conf="compile->default(compile)"/>
 		<dependency org="com.typesafe.akka" name="akka-cluster_2.11" rev="2.5.16" conf="compile->default(compile)"/>
 		<dependency org="com.typesafe.akka" name="akka-cluster-tools_2.11" rev="2.5.16" conf="compile->default(compile)"/>
-		<dependency org="org.matthicks" name="mailgun4s_2.11" rev="1.0.6" conf="compile->default(compile)"/>
+		<dependency org="org.matthicks" name="mailgun4s_2.11" rev="1.0.9" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>

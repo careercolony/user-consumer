@@ -1,15 +1,19 @@
 import config.Application._
-import model.{ForgotPasswordDto, RegisterDtoResponse}
+import model.{ForgotPasswordDto, RegisterDtoResponse, ConnectionInvitationDto}
 import org.matthicks.mailgun._
 
 import scala.concurrent._
 import scala.concurrent.duration._
 
+import java.io._ 
+
+
+
 object MailGun {
 
 
   def sendMessage(message: RegisterDtoResponse) = {
-    println("parsed message from topic:" + message)
+    println("parsed message from topic 1:" + message)
     val mailgun = new Mailgun(domainName, apiKey)
     val response = mailgun.send(Message.simple(
       from = EmailAddress(fromEmailAddress, fromEmailName),
@@ -24,7 +28,7 @@ object MailGun {
   }
 
   def sendForgotMail(message: ForgotPasswordDto) = {
-    println("parsed message from topic:" + message)
+    println("parsed message from topic 2:" + message)
     val mailgun = new Mailgun(domainName, apiKey)
     val response = mailgun.send(Message.simple(
       from = EmailAddress(fromEmailAddress, fromEmailName),
@@ -38,4 +42,43 @@ object MailGun {
     println(s"Result: $result")
   }
 
+  def sendInvitationMail(message: ConnectionInvitationDto) = {
+    println("parsed message from topic invitation:" + message)
+    
+    val mailgun = new Mailgun(domainName, apiKey)
+    val headers = Map("h:X-Mailgun-Variables" -> message)
+    
+    val response = mailgun.send(Message.simple(
+      from = EmailAddress(fromEmailAddress, fromEmailName),
+      to = EmailAddress(message.inviteeEmail, message.inviteeEmail),
+      ContactInvitationSubject,
+
+      text = "This is the testing text",
+      html = "<html><b>This</b> <i>seems</i> <img src=\"cid:example.jpg\"/> to <h1>work!</h1></html>"
+
+ 
+      //customHeaders = headers
+      
+      //template = "connection_invitation",
+      //customHeaders = headers
+      
+      
+      //html = "<html><body><div><br><br> Dear " + message.inviteeEmail + ", <br><b><h2> Hello i will like to join your colony.</h2></b><br><br><br>\n<b>Best regards,</b><br> Carrier Colony Team <br><br><br></body></html>"
+
+    ))
+
+    val result = Await.result(response, Duration.Inf)
+    println(s"Result: $result")
+  }
+
 }
+
+
+/**
+   curl -s --user 'api:key-8439b6fada7f7dde0652d5564cff0fde' \
+	 https://api.mailgun.net/v3/no-reply.careercolony.com/messages \
+	 -F from='Mailgun Sandbox <postmaster@no-reply.careercolony.com>' \
+	 -F to='Carl Njoku <flavoursoft@yahoo.com>' \
+	 -F subject='Hello Carl Njoku' \
+	 -F template='connection_invitation' \
+	 -F h:X-Mailgun-Variables='{"firstname": "Chinedu", "lastname":"Njoku"}'*/

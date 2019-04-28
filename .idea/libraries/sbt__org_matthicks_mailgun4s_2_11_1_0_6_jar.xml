@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="sbt: org.matthicks:mailgun4s_2.11:1.0.6:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/org.matthicks/mailgun4s_2.11/jars/mailgun4s_2.11-1.0.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

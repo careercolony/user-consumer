@@ -2,7 +2,7 @@ enablePlugins(JavaAppPackaging)
 enablePlugins(AshScriptPlugin)
 
 
-packageName in Docker := "careercolony/akka-http-docker-userConsumer-api"
+packageName in Docker := "careercolony/akka-http-docker-userconsumer-api"
 dockerBaseImage := "openjdk:jre-alpine"
 
 
@@ -36,6 +36,7 @@ libraryDependencies ++= {
     "com.typesafe.akka" %% "akka-stream-kafka" % "0.11-M2",
     "com.typesafe.akka" %% "akka-cluster" % akkaV,
     "com.typesafe.akka" %% "akka-cluster-tools" % akkaV,
-    "org.matthicks" %% "mailgun4s" % "1.0.6"
+    "org.matthicks" %% "mailgun4s" % "1.0.9",
+     "org.neo4j.driver" % "neo4j-java-driver" % "1.0.4"
   )
 }

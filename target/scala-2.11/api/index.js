@@ -1,0 +1,1 @@
+Index.PACKAGES = {"config" : [{"object" : "config\/Application$.html", "name" : "config.Application"}], "model" : [{"case class" : "model\/ForgotPasswordDto.html", "name" : "model.ForgotPasswordDto"}, {"object" : "model\/MyJsonProtocol$.html", "name" : "model.MyJsonProtocol"}, {"case class" : "model\/RegisterDtoResponse.html", "name" : "model.RegisterDtoResponse"}]};
