@@ -5,7 +5,7 @@ import org.matthicks.mailgun._
 import scala.concurrent._
 import scala.concurrent.duration._
 
-import java.io._ 
+import java.io._
 
 
 
@@ -47,7 +47,7 @@ object MailGun {
     
     val mailgun = new Mailgun(domainName, apiKey)
     val headers = Map("h:X-Mailgun-Variables" -> message)
-    
+
     val response = mailgun.send(Message.simple(
       from = EmailAddress(fromEmailAddress, fromEmailName),
       to = EmailAddress(message.inviteeEmail, message.inviteeEmail),

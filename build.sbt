@@ -37,6 +37,11 @@ libraryDependencies ++= {
     "com.typesafe.akka" %% "akka-cluster" % akkaV,
     "com.typesafe.akka" %% "akka-cluster-tools" % akkaV,
     "org.matthicks" %% "mailgun4s" % "1.0.9",
-     "org.neo4j.driver" % "neo4j-java-driver" % "1.0.4"
+     "org.neo4j.driver" % "neo4j-java-driver" % "1.0.4",
+    "com.mashape.unirest" % "unirest-java" % "1.4.9",
+    "org.apache.httpcomponents" % "httpclient" % "4.3.6",
+    "org.apache.httpcomponents" % "httpasyncclient" % "4.0.2",
+    "org.apache.httpcomponents" % "httpmime" % "4.3.6",
+    "org.json" % "json" % "20140107"
   )
 }
