@@ -4,7 +4,7 @@ import spray.json.DefaultJsonProtocol
 
 case class RegisterDtoResponse(memberID: String, firstname: String, lastname: String, email: String ,  avatar: String)
 
-case class ForgotPasswordDto(email: String, firstName : String , lastName : String)
+case class ForgotPasswordDto(email: String , firstName : String , lastName : String )
 
 case class ConnectionInvitationDto(memberID: String, firstname: String, lastname: String, email: String , avatar: String, position : Option[String], employer : Option[String], country:Option[String], state:Option[String], inviteeEmail : String, inviteeName : String)
 
