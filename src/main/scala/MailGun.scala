@@ -12,7 +12,6 @@ import com.mashape.unirest.http.Unirest
 
 object MailGun {
 
-
   def sendMessage(message: RegisterDtoResponse) = {
     println("parsed message from topic 1:" + message)
     val mailgun = new Mailgun(domainName, apiKey)
@@ -29,6 +28,7 @@ object MailGun {
   }
 
   def sendForgotMail(message: ForgotPasswordDto) = {
+    /**
     println("parsed message from topic 2:" + message)
     val mailgun = new Mailgun(domainName, apiKey)
     val response = mailgun.send(Message.simple(
@@ -41,46 +41,41 @@ object MailGun {
 
     val result = Await.result(response, Duration.Inf)
     println(s"Result: $result")
+    */
+
+    val request = Unirest.post("https://api.mailgun.net/v3/" + domainName + "/messages")
+      .basicAuth("api", apiKey)
+      //.field("content-type",  "multipart/form-data;")
+      .field("from", ""+ fromEmailName +"  "+ fromEmailAddress +"")
+      .field("to", "flavoursoft@yahoo.com") //message.inviteeEmail)
+      .field("subject",  ForgotPasswordSubject)
+      .field("template", "connection_invitation")
+      .field("h:X-Mailgun-Variables", "{\"firstname\":\" " + message.firstName + " \", \"lastname\":\" " + message.lastName + " \"}")
+      .asJson()
+
   }
 
   def sendInvitationMail(message: ConnectionInvitationDto) = {
     println("parsed message from topic invitation:" + message)
     
-   /* val mailgun = new Mailgun(domainName, apiKey)
-    val headers = Map("h:X-Mailgun-Variables" -> message)
-
-    val response = mailgun.send(Message.simple(
-      from = EmailAddress(fromEmailAddress, fromEmailName),
-      to = EmailAddress(message.inviteeEmail, message.inviteeEmail),
-      ContactInvitationSubject,
-
-      text = "This is the testing text",
-      html = "<html><b>This</b> <i>seems</i> <img src=\"cid:example.jpg\"/> to <h1>work!</h1></html>"
-
- 
-      //customHeaders = headers
-      
-      //template = "connection_invitation",
-      //customHeaders = headers
-      
-      
-      //html = "<html><body><div><br><br> Dear " + message.inviteeEmail + ", <br><b><h2> Hello i will like to join your colony.</h2></b><br><br><br>\n<b>Best regards,</b><br> Carrier Colony Team <br><br><br></body></html>"
-
-    ))*/
-
-
+    val employerVal: String = message.employer match { case None => "" case Some(str) => str }
+    val positionVal: String = message.position match { case None => "" case Some(str) => str }
+    val stateVal: String = message.state match { case None => "" case Some(str) => str }
+    val countryVal: String = message.country match { case None => "" case Some(str) => str }
+    
     val request = Unirest.post("https://api.mailgun.net/v3/" + domainName + "/messages")
       .basicAuth("api", apiKey)
       //.field("content-type",  "multipart/form-data;")
-      .field("from", fromEmailAddress)
-      .field("to", message.inviteeEmail)
-      .field("subject",  ContactInvitationSubject)
+      .field("from", ""+ message.firstname +" "+ message.lastname +"  "+ fromEmailAddressInvite +"")
+      .field("to", "flavoursoft@yahoo.com") //message.inviteeEmail)
+      .field("subject",  ""+ message.inviteeName +", please add me to your colony")
       .field("template", "connection_invitation")
-      .field("h:X-Mailgun-Variables", "{\"inviteeName\":" + message.firstname + "}")
+      .field("h:X-Mailgun-Variables", "{\"inviteeName\":\" " + message.inviteeName +" \", \"firstname\":\" " + message.firstname + " \", \"lastname\":\" " + message.lastname + " \", \"avatar\":\" " + message.avatar + " \", \"email\":\" " + message.email + " \", \"state\":\" " + stateVal + " \", \"country\":\" " + countryVal + " \", \"employer\":\" " + employerVal + " \", \"position\":\" " + positionVal + " \", \"inviteeEmail\":\" " + message.inviteeEmail + " \"}")
       .asJson()
 
+    //.field("h:X-Mailgun-Variables", "{\"inviteeName\":" + message.inviteeName + ", \"firstname\":" + message.firstname + ", \"lastname\":" + message.lastname + ", \"avatar\":" + message.avatar + ", \"position\":" + message.position + ", \"employer\":" + message.employer + ", \"country\":" + message.country + ", \"state\":" + message.state + ", \"inviteeEmail\":" + message.inviteeEmail + ", \"email\":" + message.email + "}")
     println( request.getBody())
-   /* val result = Await.result(response, Duration.Inf)
+    /** val result = Await.result(response, Duration.Inf)
     println(s"Result: $result")*/
   }
 

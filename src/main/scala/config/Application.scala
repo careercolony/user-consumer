@@ -20,6 +20,8 @@ object Application {
   val emailTemplate: String = config.getString("mailgun.emailTemplate")
   val fromEmailAddress: String = config.getString("mailgun.fromEmailAddress")
   val fromEmailName: String = config.getString("mailgun.fromEmailName")
+  val fromEmailAddressInvite: String = config.getString("mailgun.fromEmailAddressInvite")
+  
   
   val subject: String = config.getString("mailgun.RegisterSubject")
   val ForgotPasswordSubject: String = config.getString("mailgun.ForgotPasswordSubject")

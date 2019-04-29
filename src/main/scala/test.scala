@@ -12,7 +12,7 @@ object test extends App{
     .basicAuth("api", apiKey)
     //.field("content-type",  "multipart/form-data;")
     .field("from", fromEmailAddress)
-    .field("to", "rushabh_11490@yahoo.co.in")
+    .field("to", "flavoursoft@yahoo.com")
     .field("subject",  "test")
     .field("template", "connection_invitation")
     .field("h:X-Mailgun-Variables", "{\"inviteeName\":\"Rush\"}")

@@ -4,7 +4,7 @@
 		module="userconsumer_2.11"
 		revision="1.0"
 		status="integration"
-		publication="20190423191915"
+		publication="20190428203130"
 	>
 		<description>
 		UserConsumer
@@ -57,5 +57,10 @@
 		<dependency org="com.typesafe.akka" name="akka-cluster_2.11" rev="2.5.16" conf="compile->default(compile)"/>
 		<dependency org="com.typesafe.akka" name="akka-cluster-tools_2.11" rev="2.5.16" conf="compile->default(compile)"/>
 		<dependency org="org.matthicks" name="mailgun4s_2.11" rev="1.0.9" conf="compile->default(compile)"/>
+		<dependency org="com.mashape.unirest" name="unirest-java" rev="1.4.9" conf="compile->default(compile)"/>
+		<dependency org="org.apache.httpcomponents" name="httpclient" rev="4.3.6" conf="compile->default(compile)"/>
+		<dependency org="org.apache.httpcomponents" name="httpasyncclient" rev="4.0.2" conf="compile->default(compile)"/>
+		<dependency org="org.apache.httpcomponents" name="httpmime" rev="4.3.6" conf="compile->default(compile)"/>
+		<dependency org="org.json" name="json" rev="20140107" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>
