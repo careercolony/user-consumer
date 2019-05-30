@@ -1,7 +1,7 @@
 import com.mashape.unirest.http.Unirest
 import config.Application.{apiKey, fromEmailAddress}
 import config.Application._
-object test extends App{
+object test {
 
   println("parsed message from topic invitation:" )
 

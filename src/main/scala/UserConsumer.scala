@@ -24,8 +24,8 @@ object UserConsumer extends App {
   private def configuration: Properties = {
     val props = new Properties()
     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers)
-    props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true")
-    props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "500")
+    props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false")
+    //props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "500")
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, classOf[StringDeserializer].getCanonicalName)
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, classOf[StringDeserializer].getCanonicalName)
     props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId)
@@ -39,8 +39,11 @@ object UserConsumer extends App {
     import model.MyJsonProtocol.forgotPasswordDto
     import model.MyJsonProtocol.experienceDto
     import model.MyJsonProtocol.connectionInvitationDto
+    
 
     val recordsConnInvite: ConsumerRecords[String, String] = connInvTopicConsumer.poll(1000)
+    println("Hi")
+    //println(recordsConnInvites)
     recordsConnInvite.asScala.foreach(record => {println(s" Received message: $recordsConnInvite")
       val userData = record.value().parseJson.convertTo[ConnectionInvitationDto]
       MailGun.sendInvitationMail(userData)
@@ -54,39 +57,23 @@ object UserConsumer extends App {
 
 
     val recordsNew: ConsumerRecords[String, String] = forgotTopicConsumer.poll(1000)
+    //println("forgot")
     recordsNew.asScala.foreach(record => {println(s" Received message: $record")
       val userData = record.value().parseJson.convertTo[ForgotPasswordDto]
+      println(userData)
       MailGun.sendForgotMail(userData)
     })
 
     
-
-
     val recordsExp: ConsumerRecords[String, String] = experienceTopicConsumer.poll(1000)
-    recordsExp.asScala.foreach(record => {println(s" Received message: $recordsExp")
+    //println("great")
+    recordsExp.asScala.foreach(record => {println(s" Received message experience: $recordsExp")
       val userData = record.value().parseJson.convertTo[ExperienceDto]
+      println(userData)
       SinkToDB.sendToNeo4j(userData)
-      //println(userData)
+      
     })
     
   }
-
-/*
-  val forgotTopicConsumer = new KafkaConsumer[String, String](configuration)
-  forgotTopicConsumer.subscribe(List(forgotTopic).asJava)
-
-  while (true) {
-    import model.MyJsonProtocol.forgotPasswordDto
-    import spray.json._
-
-    val records: ConsumerRecords[String, String] = forgotTopicConsumer.poll(1000)
-    records.asScala.foreach(record => {println(s" Received message: $record")
-      val userData = record.value().parseJson.convertTo[ForgotPasswordDto]
-      MailGun.sendForgotMail(userData)
-    })
-  }
-*/
-
-
 
 }

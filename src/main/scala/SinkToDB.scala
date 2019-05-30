@@ -4,18 +4,23 @@ import mongo.Neo4jConnector.updateNeo4j
 import scala.concurrent._
 import scala.concurrent.duration._
 
+import java.io._
+
+
 
 object SinkToDB {
 
     def sendToNeo4j(message: ExperienceDto) = {
         //println("parsed message from topic:" + message)
         
-        //println(message.employer)
+ 
         //Create a profile node and [r:HAS_PROFILE] relationship 
+        val mid = message.memberID 
         val positionVal: String = message.position match {
             case None => ""
             case Some(str) => str
         }
+        println(positionVal)
 
         val descriptionVal: String = message.description match {
             case None => ""
@@ -40,7 +45,7 @@ object SinkToDB {
         }
 
         
-        val script = s"CREATE (a:Profile {position:'${positionVal}', description:'${descriptionVal}'} ), (c:Company {employername:'${employerVal}', industry:'${industryVal}'} ), (b:users {memberID:'${message.memberID}'} ), (b)-[:HAS_PROFILE {conn_type:'profile'}]->(a), (b)-[:WORKS_AT {conn_type:'work', start_month:'${start_monthVal}', start_year:'${start_yearVal}'}]->(c)"
+        val script = s"MATCH (u:users) WHERE u.memberID = '${mid}'  CREATE (a:Profile {position:'${positionVal}',description:'${descriptionVal}'}), (c:Company {employername:'${employerVal}', industry:'${industryVal}'}), (u)-[:HAS_PROFILE {conn_type:'profile'}]->(a), (u)-[:WORKS_AT {conn_type:'work', start_month:'${start_monthVal}', start_year:'${start_yearVal}'}]->(c)"
         val response = updateNeo4j(script)
 
 
@@ -48,3 +53,7 @@ object SinkToDB {
         println(s"Result: $result")
     }
 }
+
+
+ 
+

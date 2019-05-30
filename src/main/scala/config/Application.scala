@@ -23,7 +23,7 @@ object Application {
   val fromEmailAddressInvite: String = config.getString("mailgun.fromEmailAddressInvite")
   
   
-  val subject: String = config.getString("mailgun.RegisterSubject")
+  val RegisterSubject: String = config.getString("mailgun.RegisterSubject")
   val ForgotPasswordSubject: String = config.getString("mailgun.ForgotPasswordSubject")
   val ContactInvitationSubject: String = config.getString("mailgun.ContactInvitationSubject")
  // val InviteVariables: String = config.getString("mailgun.Variables")

@@ -14,6 +14,8 @@ case class ExperienceDto(memberID: String, employer:Option[String], position:Opt
   end_month: Option[String], current:Boolean
 )
 
+
+
 object MyJsonProtocol extends DefaultJsonProtocol {
   implicit val registerDtoResponse = jsonFormat5(RegisterDtoResponse)
   implicit val forgotPasswordDto = jsonFormat3(ForgotPasswordDto)
